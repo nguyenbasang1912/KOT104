@@ -10,5 +10,6 @@ router.get('', asyncHandler(ProductController.findAllProducts))
 router.get('/:productId', asyncHandler(ProductController.findDetailProduct))
 router.put('/:productId', asyncHandler(ProductController.updateProduct))
 router.get('/category/:categoryId', asyncHandler(ProductController.findProductByCategory))
+router.get('/search', asyncHandler(ProductController.searchProduct))
 
 module.exports = router

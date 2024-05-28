@@ -53,11 +53,20 @@ const findProductByCategory = async (req, res) => {
   }).json(res)
 }
 
+const searchProduct = async (req, res) => {
+  const { keyword } = req.query
+  return new SuccessResponse({
+    message: 'Search product success',
+    data: await ProductService.searchProduct(keyword)
+  }).json(res)
+}
+
 module.exports = {
   addNewProduct,
   deleteProduct,
   updateProduct,
   findAllProducts,
   findDetailProduct,
-  findProductByCategory
+  findProductByCategory,
+  searchProduct
 }

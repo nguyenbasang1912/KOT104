@@ -17,6 +17,11 @@ app.use(cors())
 
 // init router
 app.use('', rootRouter)
+app.get('/hello', (req, res) => {
+  const { keyword } = req.query
+  console.log(keyword)
+  res.send('sss')
+} )
 
 // handle error
 app.use(_ => {

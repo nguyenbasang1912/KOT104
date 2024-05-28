@@ -48,6 +48,7 @@ const findDetailProduct = async (productId) => {
 }
 
 const searchProduct = async (keyword) => {
+  console.log(keyword)
   const products = await Product.find({ $text: { $search: keyword } }).lean()
   return products
 }
@@ -58,5 +59,6 @@ module.exports = {
   addNewProduct,
   updateProduct,
   deleteProduct,
-  findDetailProduct
+  findDetailProduct,
+  searchProduct
 }
