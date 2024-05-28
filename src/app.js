@@ -6,14 +6,14 @@ const { ErrorResponse } = require('./helpers/responseHandle')
 const { handleError } = require('./helpers/handError')
 const connect = require('./configs/connectDb')
 const PORT = process.env.PORT || 5000
-const cors = require('cors')
+// const cors = require('cors')
 const rootRouter = require('./routes')
 
 // init middleware
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+// app.use(cors())
 
 // init router
 app.use('', rootRouter)

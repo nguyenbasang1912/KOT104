@@ -54,7 +54,7 @@ const findProductByCategory = async (req, res) => {
 }
 
 const searchProduct = async (req, res) => {
-  const { keyword } = req.query
+  const { keyword } = req.params
   return new SuccessResponse({
     message: 'Search product success',
     data: await ProductService.searchProduct(keyword)
