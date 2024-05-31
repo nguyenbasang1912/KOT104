@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { ErrorResponse } = require("../helpers/responseHandle");
 const UserModel = require("../models/user.model");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
 const generateTokenPair = ({ userId, role, email }) => {
   if (!userId || !role || !email)
@@ -27,17 +27,23 @@ const generateTokenPair = ({ userId, role, email }) => {
 };
 
 const login = async ({ email, password }) => {
-  if (!email || !password) throw new ErrorResponse({ message: 'all fields are required' })
-  
-  const user = UserModel.findOne({ email }).lean()
-  if (!user) throw new ErrorResponse({ message: 'email or password wrong' })
-  
-  const checkPassword = await bcrypt.compare(password, user.password)
+  if (!email || !password)
+    throw new ErrorResponse({ message: "all fields are required" });
 
-  if (!checkPassword) throw new ErrorResponse({ message: 'email or password wrong' })
-  
-  const token = generateTokenPair({ userId: user._id, role: user.role, email: user.email })
-  
+  const user = await UserModel.findOne({ email }).lean();
+  if (!user) throw new ErrorResponse({ message: "email or password wrong" });
+
+  const checkPassword = await bcrypt.compare(password, user.password);
+
+  if (!checkPassword)
+    throw new ErrorResponse({ message: "email or password wrong" });
+
+  const token = generateTokenPair({
+    userId: user._id,
+    role: user.role,
+    email: user.email,
+  });
+
   return {
     userId: user._id,
     email: user.email,
@@ -50,25 +56,25 @@ const register = async ({ email, fullname, password }) => {
   if (!email || !fullname || !password)
     throw new ErrorResponse({ message: "all fields are required" });
 
-  const existUser = UserModel.find({ email })
-  if (existUser) throw new ErrorResponse({ message: 'email already registed' })
-  
-  const hashPassword = await bcrypt.hash(password, 10)
+  const existUser = await UserModel.findOne({ email });
+  if (existUser) throw new ErrorResponse({ message: "email already registed" });
+
+  const hashPassword = await bcrypt.hash(password, 10);
   const user = await UserModel.create({
-    email, 
+    email,
     fullname,
-    password: hashPassword
-  })
-  
+    password: hashPassword,
+  });
+
   return {
     userId: user._id,
     email: user.email,
-    fullname: user.fullname
-  }
+    fullname: user.fullname,
+  };
 };
 
 module.exports = {
   generateTokenPair,
   login,
-  register
+  register,
 };
