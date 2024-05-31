@@ -7,13 +7,15 @@ const addProductToCart = async ({ userId, productId, quantity }) => {
 
   if (!product) throw new ErrorResponse({ message: "product doesn't exist" });
 
+  if (quantity > product.stock) throw new ErrorResponse({message: 'quantity out of range'})
+
   return await updateCart({ userId, productId, quantity });
 };
 
 const updateCart = async ({ userId, productId, quantity }) => {
   const options = { upsert: true, new: true };
 
-  if (quantity === 0) {
+  if (+quantity === 0) {
     // Xóa sản phẩm khỏi giỏ hàng nếu số lượng là 0
     return await CartModel.findOneAndUpdate(
       { userId },
