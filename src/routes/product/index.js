@@ -8,7 +8,7 @@ router.post('', upload.array(['images']), handleUploadImage, asyncHandler(Produc
 router.delete('/:productId', asyncHandler(ProductController.deleteProduct))
 router.get('', asyncHandler(ProductController.findAllProducts))
 router.get('/:productId', asyncHandler(ProductController.findDetailProduct))
-router.put('/:productId', asyncHandler(ProductController.updateProduct))
+router.put('/:productId', upload.array(['images']), handleUploadImage, asyncHandler(ProductController.updateProduct))
 router.get('/category/:categoryId', asyncHandler(ProductController.findProductByCategory))
 router.get('/search/:keyword', asyncHandler(ProductController.searchProduct))
 

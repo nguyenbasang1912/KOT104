@@ -40,9 +40,18 @@ const deleteProduct = async (productId) => {
 }
 
 const findDetailProduct = async (productId) => {
-  const product = await Product
-    .findOne({ _id: productId, isPublish: true })
-    .select(unSelectedField(['product_thumb', '__v', 'isDraft', 'isPublish'])).lean()
+  const product = await Product.findOne({ _id: productId, isPublish: true })
+    .select(
+      unSelectedField([
+        "product_thumb",
+        "__v",
+        "isDraft",
+        "isPublish",
+        "createdAt",
+        "updatedAt",
+      ])
+    )
+    .lean();
   if (!product) throw new ErrorResponse({ message: 'Product doesn\'t exist' })
   return product
 }

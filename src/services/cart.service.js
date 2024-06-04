@@ -7,7 +7,8 @@ const addProductToCart = async ({ userId, productId, quantity }) => {
 
   if (!product) throw new ErrorResponse({ message: "product doesn't exist" });
 
-  if (quantity > product.stock) throw new ErrorResponse({message: 'quantity out of range'})
+  if (quantity > product.stock)
+    throw new ErrorResponse({ message: "quantity out of range" });
 
   return await updateCart({ userId, productId, quantity });
 };
@@ -48,10 +49,18 @@ const updateCart = async ({ userId, productId, quantity }) => {
 };
 
 const findListCart = async (userId) => {
-  return await CartModel.findOne({ userId }).lean().select(['products']) || [];
+  return (
+    (await CartModel.findOne({ userId })
+      .lean()
+      .select(["products"])
+      .populate(
+        "products.productId",
+        "product_name product_price product_thumb stock"
+      )) || []
+  );
 };
 
 module.exports = {
   addProductToCart,
-  findListCart
+  findListCart,
 };
