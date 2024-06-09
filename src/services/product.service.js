@@ -6,7 +6,7 @@ const { unSelectedField } = require('../utils')
 const findProductByCategory = async (categoryId) => {
   const category = await Category.findOne({ status: true, _id: categoryId }).lean()
   if (!category) throw new ErrorResponse({message: 'Category doesn\'t exist'})
-  const products = await Product.find({ category_id: categoryId, isPublish: true }).lean()
+  const products = await Product.find({ category_id: categoryId, isPublish: true }).select(["product_name", "product_price", "product_thumb"]).lean()
   return products
 }
 
@@ -49,6 +49,7 @@ const findDetailProduct = async (productId) => {
         "isPublish",
         "createdAt",
         "updatedAt",
+        "type"
       ])
     )
     .lean();

@@ -15,7 +15,7 @@ const handleUploadImage = asyncHandler(async (req, res, next) => {
         cloudinary.uploader.upload_stream((err, uploadResult) => {
           if (err) reject(err)
           const { public_id, url } = uploadResult
-          return resolve({ public_id, url })
+          return resolve({ public_id, url: url.replace(/http/g, 'https') })
         }).end(file.buffer)
       })
       files.push(asyncImage);
@@ -38,7 +38,7 @@ const handleUploadSingleImage = asyncHandler(async (req, res, next) => {
     cloudinary.uploader.upload_stream((err, uploadResult) => {
       if (err) reject(err)
       const { public_id, url } = uploadResult
-      return resolve({ public_id, url })
+      return resolve({ public_id, url: url.replace('http', 'https') })
     }).end(image.buffer)
   })
 
